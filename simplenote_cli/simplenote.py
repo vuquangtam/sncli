@@ -20,6 +20,7 @@ import time
 import datetime
 import logging
 import requests
+import html
 
 try:
     import json
@@ -121,6 +122,7 @@ class Simplenote(object):
             res = requests.get(url, params=params)
             res.raise_for_status()
             note = res.json()
+            note.content = html.unescape(note.content)
         except ConnectionError as e:
             self.status = 'offline, connection error'
             return e, -1
